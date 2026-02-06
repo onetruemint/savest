@@ -20,7 +20,7 @@
   --savings-lighter: #c8e6c9;
 }
 
-.true-cost-badge {
+.savest-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -37,44 +37,44 @@
   box-shadow: 0 2px 6px rgba(76, 175, 80, 0.25);
 }
 
-.true-cost-label {
+.savest-label {
   color: var(--savings-medium);
   font-weight: 500;
 }
 
-.true-cost-value {
+.savest-value {
   color: var(--savings-dark);
   font-weight: 700;
   font-size: 14px;
 }
 
 /* Hover effect */
-.true-cost-badge:hover {
+.savest-badge:hover {
   background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
   box-shadow: 0 3px 8px rgba(76, 175, 80, 0.35);
 }
 
 /* Adjust for different Amazon layouts */
-.a-price-whole + .true-cost-badge,
-.a-price + .true-cost-badge {
+.a-price-whole + .savest-badge,
+.a-price + .savest-badge {
   display: block;
   width: fit-content;
 }
 
 /* Search results page adjustments */
-.s-result-item .true-cost-badge {
+.s-result-item .savest-badge {
   margin-top: 2px;
   font-size: 11px;
   padding: 3px 6px;
 }
 
 /* Cart page adjustments */
-.sc-list-item .true-cost-badge {
+.sc-list-item .savest-badge {
   margin-left: 8px;
 }
 
 /* Confirmation Modal */
-.true-cost-modal-overlay {
+.savest-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -89,17 +89,17 @@
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-.true-cost-modal {
+.savest-modal {
   background: var(--white);
   border-radius: 12px;
   max-width: 400px;
   width: 90%;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  animation: true-cost-modal-appear 0.2s ease-out;
+  animation: savest-modal-appear 0.2s ease-out;
 }
 
-@keyframes true-cost-modal-appear {
+@keyframes savest-modal-appear {
   from {
     opacity: 0;
     transform: scale(0.95) translateY(-10px);
@@ -110,7 +110,7 @@
   }
 }
 
-.true-cost-modal-header {
+.savest-modal-header {
   background: linear-gradient(135deg, var(--savings-primary) 0%, #43a047 100%);
   color: var(--white);
   padding: 16px 20px;
@@ -118,18 +118,18 @@
   font-weight: 600;
 }
 
-.true-cost-modal-body {
+.savest-modal-body {
   padding: 20px;
 }
 
-.true-cost-modal-body p {
+.savest-modal-body p {
   margin: 0 0 16px 0;
   color: var(--black);
   font-size: 15px;
   line-height: 1.5;
 }
 
-.true-cost-modal-highlight {
+.savest-modal-highlight {
   background: linear-gradient(135deg, var(--mint) 0%, #c8e6c9 100%);
   border: 2px solid var(--savings-primary);
   border-radius: 8px;
@@ -138,47 +138,47 @@
   text-align: center;
 }
 
-.true-cost-modal-price {
+.savest-modal-price {
   font-size: 20px;
   font-weight: 600;
   color: var(--savings-medium);
 }
 
-.true-cost-modal-arrow {
+.savest-modal-arrow {
   font-size: 20px;
   margin: 8px 0;
   color: var(--savings-primary);
 }
 
-.true-cost-modal-future {
+.savest-modal-future {
   font-size: 16px;
   color: var(--savings-dark);
 }
 
-.true-cost-modal-future strong {
+.savest-modal-future strong {
   font-size: 22px;
   font-weight: 700;
 }
 
-.true-cost-modal-question {
+.savest-modal-question {
   font-weight: 500;
   color: var(--black) !important;
   font-size: 16px;
 }
 
-.true-cost-modal-subtext {
+.savest-modal-subtext {
   color: #666 !important;
   font-size: 13px;
   font-style: italic;
 }
 
-.true-cost-modal-buttons {
+.savest-modal-buttons {
   display: flex;
   gap: 12px;
   padding: 0 20px 20px;
 }
 
-.true-cost-modal-buttons button {
+.savest-modal-buttons button {
   flex: 1;
   padding: 12px 16px;
   border-radius: 8px;
@@ -188,76 +188,76 @@
   transition: all 0.2s;
 }
 
-.true-cost-modal-cancel {
+.savest-modal-cancel {
   background: var(--white);
   border: 1px solid #ddd;
   color: var(--black);
 }
 
-.true-cost-modal-cancel:hover {
+.savest-modal-cancel:hover {
   background: var(--mint);
 }
 
-.true-cost-modal-confirm {
+.savest-modal-confirm {
   background: var(--savings-primary);
   border: none;
   color: var(--white);
 }
 
-.true-cost-modal-confirm:hover {
+.savest-modal-confirm:hover {
   background: #43a047;
 }
 
 /* Stacked buttons for want/need */
-.true-cost-modal-buttons-stacked {
+.savest-modal-buttons-stacked {
   flex-direction: column;
 }
 
-.true-cost-modal-need {
+.savest-modal-need {
   background: var(--savings-primary);
   border: none;
   color: var(--white);
 }
 
-.true-cost-modal-need:hover {
+.savest-modal-need:hover {
   background: #43a047;
 }
 
-.true-cost-modal-want {
+.savest-modal-want {
   background: var(--white);
   border: 1px solid #ddd;
   color: var(--black);
 }
 
-.true-cost-modal-want:hover {
+.savest-modal-want:hover {
   background: var(--mint);
 }
 
 /* Skip & Save button */
-.true-cost-modal-skip {
+.savest-modal-skip {
   background: linear-gradient(135deg, var(--savings-primary) 0%, #43a047 100%);
   border: none;
   color: var(--white);
   font-weight: 600;
 }
 
-.true-cost-modal-skip:hover {
+.savest-modal-skip:hover {
   background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
 }
 
-.true-cost-modal-buy-anyway {
+.savest-modal-buy-anyway {
   background: var(--white);
   border: 1px solid #ddd;
   color: #666;
   font-size: 13px;
 }
 
-.true-cost-modal-buy-anyway:hover {
+.savest-modal-buy-anyway:hover {
   background: var(--mint);
 }
 
 /* Saved confirmation */
-.true-cost-modal-saved {
+.savest-modal-saved {
   background: linear-gradient(135deg, var(--mint) 0%, #c8e6c9 100%);
   border: 2px solid var(--savings-primary);
   border-radius: 8px;
@@ -266,35 +266,35 @@
   margin-bottom: 16px;
 }
 
-.true-cost-modal-saved-label {
+.savest-modal-saved-label {
   font-size: 14px;
   color: var(--savings-medium);
   margin-bottom: 4px;
 }
 
-.true-cost-modal-saved-amount {
+.savest-modal-saved-amount {
   font-size: 32px;
   font-weight: 700;
   color: var(--savings-dark);
 }
 
-.true-cost-modal-total {
+.savest-modal-total {
   text-align: center;
   font-size: 14px;
   color: #666;
 }
 
-.true-cost-modal-total strong {
+.savest-modal-total strong {
   color: var(--savings-dark);
 }
 
-.true-cost-modal-close {
+.savest-modal-close {
   background: var(--savings-primary);
   border: none;
   color: var(--white);
   width: 100%;
 }
 
-.true-cost-modal-close:hover {
+.savest-modal-close:hover {
   background: #43a047;
 }

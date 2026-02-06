@@ -1,4 +1,4 @@
-# OneTrueMint's True Cost Calculator
+# OneTrueMint's Savest
 
 Are you sure you _need_ that new shirt?
 

@@ -14,8 +14,8 @@
   // Current question variant (loaded from Supabase or default)
   let currentVariant = null;
 
-  const BADGE_CLASS = "true-cost-badge";
-  const PROCESSED_ATTR = "data-true-cost-processed";
+  const BADGE_CLASS = "savest-badge";
+  const PROCESSED_ATTR = "data-savest-processed";
 
   // Price selectors for Amazon - only main product price and cart totals
   const PRODUCT_PAGE_SELECTORS = [
@@ -285,7 +285,7 @@
     const badge = document.createElement("div");
     badge.className = BADGE_CLASS;
     badge.innerHTML = `
-      <span class="true-cost-label">💰 If invested, worth <span class="true-cost-value">${formatCurrency(futureValue)}</span> in ${settings.years} yrs</span>
+      <span class="savest-label">💰 If invested, worth <span class="savest-value">${formatCurrency(futureValue)}</span> in ${settings.years} yrs</span>
     `;
 
     // Insert after the price
@@ -303,7 +303,7 @@
   }
 
   // Purchase confirmation feature
-  const CONFIRM_PROCESSED_ATTR = "data-true-cost-confirm";
+  const CONFIRM_PROCESSED_ATTR = "data-savest-confirm";
 
   const PURCHASE_BUTTON_SELECTORS = [
     "#add-to-cart-button",
@@ -333,8 +333,8 @@
     if (!settings.confirmBeforePurchase) return;
 
     // Don't intercept if user already confirmed
-    if (e.target.hasAttribute("data-true-cost-confirmed")) {
-      e.target.removeAttribute("data-true-cost-confirmed");
+    if (e.target.hasAttribute("data-savest-confirmed")) {
+      e.target.removeAttribute("data-savest-confirmed");
       return;
     }
 
@@ -380,7 +380,7 @@
 
   function showWantNeedModal(price, targetButton) {
     // Remove any existing modal
-    const existing = document.getElementById("true-cost-modal");
+    const existing = document.getElementById("savest-modal");
     if (existing) existing.remove();
 
     const futureValue = calculateFutureValue(price);
@@ -390,20 +390,20 @@
     const variant = currentVariant || DEFAULT_VARIANTS[0];
 
     const modal = document.createElement("div");
-    modal.id = "true-cost-modal";
-    modal.className = "true-cost-modal-overlay";
+    modal.id = "savest-modal";
+    modal.className = "savest-modal-overlay";
 
     // Step 1: Want vs Need question
     modal.innerHTML = `
-      <div class="true-cost-modal">
-        <div class="true-cost-modal-header">🤔 Quick check...</div>
-        <div class="true-cost-modal-body">
-          <p class="true-cost-modal-question">${escapeHtml(variant.question_text)}</p>
-          <p class="true-cost-modal-subtext">${escapeHtml(variant.subtext || "")}</p>
+      <div class="savest-modal">
+        <div class="savest-modal-header">🤔 Quick check...</div>
+        <div class="savest-modal-body">
+          <p class="savest-modal-question">${escapeHtml(variant.question_text)}</p>
+          <p class="savest-modal-subtext">${escapeHtml(variant.subtext || "")}</p>
         </div>
-        <div class="true-cost-modal-buttons true-cost-modal-buttons-stacked">
-          <button class="true-cost-modal-need">I need this</button>
-          <button class="true-cost-modal-want">I just want it</button>
+        <div class="savest-modal-buttons savest-modal-buttons-stacked">
+          <button class="savest-modal-need">I need this</button>
+          <button class="savest-modal-want">I just want it</button>
         </div>
       </div>
     `;
@@ -411,28 +411,24 @@
     document.body.appendChild(modal);
 
     // Handle "I need this" - proceed immediately
-    modal
-      .querySelector(".true-cost-modal-need")
-      .addEventListener("click", () => {
-        modal.remove();
-        recordDecision(price, "need", "purchased", variant);
-        targetButton.setAttribute("data-true-cost-confirmed", "true");
-        targetButton.click();
-      });
+    modal.querySelector(".savest-modal-need").addEventListener("click", () => {
+      modal.remove();
+      recordDecision(price, "need", "purchased", variant);
+      targetButton.setAttribute("data-savest-confirmed", "true");
+      targetButton.click();
+    });
 
     // Handle "I just want it" - show opportunity cost
-    modal
-      .querySelector(".true-cost-modal-want")
-      .addEventListener("click", () => {
-        showWantConfirmation(
-          modal,
-          price,
-          futureValue,
-          currencySymbol,
-          targetButton,
-          variant,
-        );
-      });
+    modal.querySelector(".savest-modal-want").addEventListener("click", () => {
+      showWantConfirmation(
+        modal,
+        price,
+        futureValue,
+        currencySymbol,
+        targetButton,
+        variant,
+      );
+    });
 
     // Close on overlay click
     modal.addEventListener("click", (e) => {
@@ -456,27 +452,27 @@
     targetButton,
     variant,
   ) {
-    const modalContent = modal.querySelector(".true-cost-modal");
+    const modalContent = modal.querySelector(".savest-modal");
 
     modalContent.innerHTML = `
-      <div class="true-cost-modal-header">💰 Here's what you could save...</div>
-      <div class="true-cost-modal-body">
-        <div class="true-cost-modal-highlight">
-          <div class="true-cost-modal-price">${currencySymbol}${price.toFixed(2)} today</div>
-          <div class="true-cost-modal-arrow">↓</div>
-          <div class="true-cost-modal-future">Could become <strong>${formatCurrency(futureValue)}</strong> in ${settings.years} years</div>
+      <div class="savest-modal-header">💰 Here's what you could save...</div>
+      <div class="savest-modal-body">
+        <div class="savest-modal-highlight">
+          <div class="savest-modal-price">${currencySymbol}${price.toFixed(2)} today</div>
+          <div class="savest-modal-arrow">↓</div>
+          <div class="savest-modal-future">Could become <strong>${formatCurrency(futureValue)}</strong> in ${settings.years} years</div>
         </div>
-        <p class="true-cost-modal-question">Skip this purchase and invest the money instead?</p>
+        <p class="savest-modal-question">Skip this purchase and invest the money instead?</p>
       </div>
-      <div class="true-cost-modal-buttons">
-        <button class="true-cost-modal-skip">Skip & Save ${currencySymbol}${price.toFixed(2)}</button>
-        <button class="true-cost-modal-buy-anyway">Buy anyway</button>
+      <div class="savest-modal-buttons">
+        <button class="savest-modal-skip">Skip & Save ${currencySymbol}${price.toFixed(2)}</button>
+        <button class="savest-modal-buy-anyway">Buy anyway</button>
       </div>
     `;
 
     // Handle "Skip & Save"
     modalContent
-      .querySelector(".true-cost-modal-skip")
+      .querySelector(".savest-modal-skip")
       .addEventListener("click", () => {
         recordSkippedPurchase(price, variant);
         showSavedConfirmation(modal, price, currencySymbol);
@@ -484,38 +480,38 @@
 
     // Handle "Buy anyway"
     modalContent
-      .querySelector(".true-cost-modal-buy-anyway")
+      .querySelector(".savest-modal-buy-anyway")
       .addEventListener("click", () => {
         modal.remove();
         recordDecision(price, "want", "purchased", variant);
-        targetButton.setAttribute("data-true-cost-confirmed", "true");
+        targetButton.setAttribute("data-savest-confirmed", "true");
         targetButton.click();
       });
   }
 
   function showSavedConfirmation(modal, price, currencySymbol) {
-    const modalContent = modal.querySelector(".true-cost-modal");
+    const modalContent = modal.querySelector(".savest-modal");
 
     chrome.storage.local.get({ totalSaved: 0 }, (result) => {
       modalContent.innerHTML = `
-        <div class="true-cost-modal-header">🎉 Great choice!</div>
-        <div class="true-cost-modal-body">
-          <div class="true-cost-modal-saved">
-            <div class="true-cost-modal-saved-label">You just saved</div>
-            <div class="true-cost-modal-saved-amount">${currencySymbol}${price.toFixed(2)}</div>
+        <div class="savest-modal-header">🎉 Great choice!</div>
+        <div class="savest-modal-body">
+          <div class="savest-modal-saved">
+            <div class="savest-modal-saved-label">You just saved</div>
+            <div class="savest-modal-saved-amount">${currencySymbol}${price.toFixed(2)}</div>
           </div>
-          <div class="true-cost-modal-total">
+          <div class="savest-modal-total">
             <span>Total saved so far:</span>
             <strong>${currencySymbol}${result.totalSaved.toFixed(2)}</strong>
           </div>
         </div>
-        <div class="true-cost-modal-buttons">
-          <button class="true-cost-modal-close">Nice!</button>
+        <div class="savest-modal-buttons">
+          <button class="savest-modal-close">Nice!</button>
         </div>
       `;
 
       modalContent
-        .querySelector(".true-cost-modal-close")
+        .querySelector(".savest-modal-close")
         .addEventListener("click", () => {
           modal.remove();
         });

@@ -1,5 +1,5 @@
 {
-  "name": "true-cost-calculator-backend",
+  "name": "savest-backend",
   "version": "1.0.0",
   "description": "Backend proxy server for Savest Chrome extension",
   "type": "module",
