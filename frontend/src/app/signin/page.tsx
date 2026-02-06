@@ -38,7 +38,7 @@ export default function SignInPage() {
         window.dispatchEvent(new Event("tc-auth-updated"));
 
         setSuccess(
-          "Success! You can now close this page and return to the extension."
+          "Success! You can now close this page and return to the extension.",
         );
       } else if (result.user && !result.session) {
         // Email confirmation required
@@ -65,7 +65,10 @@ export default function SignInPage() {
     <div className="min-h-screen bg-gradient-to-b from-mint to-white flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2.5 text-xl font-semibold text-dark">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2.5 text-xl font-semibold text-dark"
+          >
             <svg
               viewBox="0 0 24 24"
               width="32"
@@ -78,7 +81,7 @@ export default function SignInPage() {
               <circle cx="12" cy="12" r="10" />
               <path d="M12 6v6l4 2" />
             </svg>
-            <span>True Cost Calculator</span>
+            <span>Savest</span>
           </Link>
         </div>
 
@@ -119,7 +122,10 @@ export default function SignInPage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-dark mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-dark mb-1"
+              >
                 Email
               </label>
               <input
@@ -134,7 +140,10 @@ export default function SignInPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-dark mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-dark mb-1"
+              >
                 Password
               </label>
               <input
@@ -171,8 +180,8 @@ export default function SignInPage() {
                   ? "Creating account..."
                   : "Signing in..."
                 : isSignUp
-                ? "Create Account"
-                : "Sign In"}
+                  ? "Create Account"
+                  : "Sign In"}
             </button>
           </form>
 
@@ -217,7 +226,10 @@ export default function SignInPage() {
 
         {/* Back to home */}
         <p className="text-center mt-6">
-          <Link href="/" className="text-primary hover:underline text-sm font-medium">
+          <Link
+            href="/"
+            className="text-primary hover:underline text-sm font-medium"
+          >
             ← Back to home
           </Link>
         </p>

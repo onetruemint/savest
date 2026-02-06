@@ -2,22 +2,26 @@ const steps = [
   {
     number: 1,
     title: "Install the Extension",
-    description: "Add True Cost Calculator to Chrome with one click. No account required to start.",
+    description:
+      "Add Savest to Chrome with one click. No account required to start.",
   },
   {
     number: 2,
     title: "Shop as Usual",
-    description: "Browse Amazon and other shopping sites. The extension automatically detects prices.",
+    description:
+      "Browse Amazon and other shopping sites. The extension automatically detects prices.",
   },
   {
     number: 3,
     title: "See the True Cost",
-    description: "A subtle badge appears showing what the money could grow to if invested instead.",
+    description:
+      "A subtle badge appears showing what the money could grow to if invested instead.",
   },
   {
     number: 4,
     title: "Make Better Decisions",
-    description: "With the true cost visible, decide if the purchase is really worth it to you.",
+    description:
+      "With the true cost visible, decide if the purchase is really worth it to you.",
   },
 ];
 
@@ -29,8 +33,8 @@ export default function HowItWorks() {
           How It Works
         </h2>
         <p className="text-lg text-dark/70 text-center max-w-2xl mx-auto mb-12">
-          Simple math, powerful insight. The True Cost Calculator uses compound
-          interest to show opportunity cost.
+          Simple math, powerful insight. The Savest uses compound interest to
+          show opportunity cost.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">

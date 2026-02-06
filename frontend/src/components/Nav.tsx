@@ -1,33 +1,40 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Nav() {
   return (
     <nav className="fixed top-0 left-0 right-0 bg-mint/90 backdrop-blur-sm border-b border-primary/20 z-50">
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
-        <Link href="/" className="flex items-center gap-2.5 text-lg font-semibold text-dark">
-          <svg
-            viewBox="0 0 24 24"
-            width="28"
-            height="28"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="text-primary"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 6v6l4 2" />
-          </svg>
-          <span>True Cost Calculator</span>
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 text-lg font-semibold text-dark"
+        >
+          <Image
+            src="/SavestRound.svg"
+            alt="Savent logo"
+            width={28}
+            height={28}
+          />
+          <span>Savest</span>
         </Link>
 
         <div className="flex items-center gap-8">
-          <Link href="#features" className="text-dark/70 text-sm font-medium hover:text-dark transition-colors hidden md:block">
+          <Link
+            href="#features"
+            className="text-dark/70 text-sm font-medium hover:text-dark transition-colors hidden md:block"
+          >
             Features
           </Link>
-          <Link href="#how-it-works" className="text-dark/70 text-sm font-medium hover:text-dark transition-colors hidden md:block">
+          <Link
+            href="#how-it-works"
+            className="text-dark/70 text-sm font-medium hover:text-dark transition-colors hidden md:block"
+          >
             How It Works
           </Link>
-          <Link href="#calculator" className="text-dark/70 text-sm font-medium hover:text-dark transition-colors hidden md:block">
+          <Link
+            href="#calculator"
+            className="text-dark/70 text-sm font-medium hover:text-dark transition-colors hidden md:block"
+          >
             Try It
           </Link>
           <Link
