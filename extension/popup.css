@@ -208,6 +208,8 @@ button:hover {
   color: var(--primary);
   margin-top: 8px;
   min-height: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 /* Auth Section */

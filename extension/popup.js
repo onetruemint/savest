@@ -5,8 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const returnRateInput = document.getElementById("returnRate");
   const yearsInput = document.getElementById("years");
   const minPriceInput = document.getElementById("minPrice");
-  const saveBtn = document.getElementById("saveBtn");
   const status = document.getElementById("status");
+
+  // Debounce timer for auto-save
+  let saveTimeout = null;
   const exampleResult = document.getElementById("exampleResult");
   const savingsDisplay = document.getElementById("savingsDisplay");
   const savingsAmount = document.getElementById("savingsAmount");
@@ -207,47 +209,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Update display when toggle changes
-  confirmToggle.addEventListener("change", async () => {
-    updateSavingsDisplay(null, confirmToggle.checked);
-    if (confirmToggle.checked) {
-      await loadSavings();
-    }
-  });
-
-  // Update example on input change
-  returnRateInput.addEventListener("input", updateExample);
-  yearsInput.addEventListener("input", updateExample);
-
-  function updateExample() {
-    const rate = parseFloat(returnRateInput.value) / 100;
-    const years = parseInt(yearsInput.value);
-    const futureValue = calculateFutureValue(100, rate, years);
-    exampleResult.textContent = `True cost: $${futureValue.toFixed(
-      0
-    )} in ${years} years`;
-  }
-
-  function calculateFutureValue(presentValue, annualRate, years) {
-    return presentValue * Math.pow(1 + annualRate, years);
-  }
-
-  // Save settings
-  saveBtn.addEventListener("click", async () => {
+  // Auto-save settings with debounce
+  async function saveSettings() {
     const settings = {
       enabled: enableToggle.checked,
       confirmBeforePurchase: confirmToggle.checked,
-      returnRate: parseFloat(returnRateInput.value),
-      years: parseInt(yearsInput.value),
+      returnRate: parseFloat(returnRateInput.value) || 7,
+      years: parseInt(yearsInput.value) || 10,
       minPrice: parseFloat(minPriceInput.value) || 0,
     };
 
     // Save to local storage
     chrome.storage.local.set(settings, () => {
-      status.textContent = "Settings saved!";
+      // Show brief save confirmation
+      status.textContent = "Saved";
+      status.style.opacity = "1";
       setTimeout(() => {
-        status.textContent = "";
-      }, 2000);
+        status.style.opacity = "0";
+      }, 1000);
 
       // Notify content scripts
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -268,22 +247,51 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.supabase.isAuthenticated()) {
       await window.supabase.saveSettings(settings);
     }
+  }
+
+  // Debounced save for text inputs
+  function debouncedSave() {
+    if (saveTimeout) clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(saveSettings, 500);
+  }
+
+  // Update example calculation
+  function updateExample() {
+    const rate = parseFloat(returnRateInput.value) / 100;
+    const years = parseInt(yearsInput.value);
+    const futureValue = calculateFutureValue(100, rate, years);
+    exampleResult.textContent = `True cost: $${futureValue.toFixed(
+      0
+    )} in ${years} years`;
+  }
+
+  function calculateFutureValue(presentValue, annualRate, years) {
+    return presentValue * Math.pow(1 + annualRate, years);
+  }
+
+  // Toggle change handlers - save immediately
+  enableToggle.addEventListener("change", saveSettings);
+
+  confirmToggle.addEventListener("change", async () => {
+    updateSavingsDisplay(null, confirmToggle.checked);
+    if (confirmToggle.checked) {
+      await loadSavings();
+    }
+    saveSettings();
   });
 
-  // Quick toggle
-  enableToggle.addEventListener("change", () => {
-    chrome.storage.local.set({ enabled: enableToggle.checked });
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0]) {
-        chrome.tabs
-          .sendMessage(tabs[0].id, {
-            action: "toggle",
-            enabled: enableToggle.checked,
-          })
-          .catch(() => {});
-      }
-    });
+  // Input change handlers - debounced save
+  returnRateInput.addEventListener("input", () => {
+    updateExample();
+    debouncedSave();
   });
+
+  yearsInput.addEventListener("input", () => {
+    updateExample();
+    debouncedSave();
+  });
+
+  minPriceInput.addEventListener("input", debouncedSave);
 
   // Listen for auth state changes from other parts of extension
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

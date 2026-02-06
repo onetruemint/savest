@@ -1,4 +1,4 @@
-// Background service worker for True Cost Calculator
+// Background service worker for Savest
 
 // Default settings
 const DEFAULT_SETTINGS = {
@@ -6,16 +6,16 @@ const DEFAULT_SETTINGS = {
   confirmBeforePurchase: false,
   returnRate: 7,
   years: 10,
-  minPrice: 10
+  minPrice: 10,
 };
 
 // Initialize on install
 chrome.runtime.onInstalled.addListener((details) => {
-  if (details.reason === 'install') {
+  if (details.reason === "install") {
     // Set default settings on fresh install
     chrome.storage.local.set(DEFAULT_SETTINGS);
-    console.log('True Cost Calculator installed');
-  } else if (details.reason === 'update') {
+    console.log("Savest installed");
+  } else if (details.reason === "update") {
     // Ensure new settings exist after update
     chrome.storage.local.get(DEFAULT_SETTINGS, (current) => {
       // Only set defaults for missing keys
@@ -29,40 +29,43 @@ chrome.runtime.onInstalled.addListener((details) => {
         chrome.storage.local.set(updates);
       }
     });
-    console.log('True Cost Calculator updated');
+    console.log("Savest updated");
   }
 });
 
 // Handle messages from popup and content scripts
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'authStateChanged') {
+  if (message.action === "authStateChanged") {
     // Broadcast auth state change to all extension pages
     broadcastAuthState(message.user);
     sendResponse({ success: true });
   }
 
-  if (message.action === 'getAuthState') {
+  if (message.action === "getAuthState") {
     // Get current auth state from storage
-    chrome.storage.local.get(['api_user'], (result) => {
+    chrome.storage.local.get(["api_user"], (result) => {
       sendResponse({ user: result.api_user || null });
     });
     return true; // Keep channel open for async response
   }
 
-  if (message.action === 'syncAuthFromFrontend') {
+  if (message.action === "syncAuthFromFrontend") {
     // Received auth tokens from frontend via content script
     const { accessToken, refreshToken, user } = message;
 
     if (accessToken && refreshToken) {
-      chrome.storage.local.set({
-        api_access_token: accessToken,
-        api_refresh_token: refreshToken,
-        api_user: user
-      }, () => {
-        console.log('Auth synced from frontend');
-        // Broadcast to all extension pages
-        broadcastAuthState(user);
-      });
+      chrome.storage.local.set(
+        {
+          api_access_token: accessToken,
+          api_refresh_token: refreshToken,
+          api_user: user,
+        },
+        () => {
+          console.log("Auth synced from frontend");
+          // Broadcast to all extension pages
+          broadcastAuthState(user);
+        },
+      );
     }
     sendResponse({ success: true });
   }
@@ -75,30 +78,30 @@ async function broadcastAuthState(user) {
   try {
     const tabs = await chrome.tabs.query({
       url: [
-        '*://*.amazon.com/*',
-        '*://*.amazon.co.uk/*',
-        '*://*.amazon.ca/*',
-        '*://*.amazon.de/*',
-        '*://*.amazon.fr/*',
-        '*://*.amazon.es/*',
-        '*://*.amazon.it/*',
-        '*://*.amazon.co.jp/*',
-        '*://*.amazon.com.au/*'
-      ]
+        "*://*.amazon.com/*",
+        "*://*.amazon.co.uk/*",
+        "*://*.amazon.ca/*",
+        "*://*.amazon.de/*",
+        "*://*.amazon.fr/*",
+        "*://*.amazon.es/*",
+        "*://*.amazon.it/*",
+        "*://*.amazon.co.jp/*",
+        "*://*.amazon.com.au/*",
+      ],
     });
 
     for (const tab of tabs) {
       try {
         await chrome.tabs.sendMessage(tab.id, {
-          action: 'authStateChanged',
-          user: user
+          action: "authStateChanged",
+          user: user,
         });
       } catch (e) {
         // Tab might not have content script loaded
       }
     }
   } catch (e) {
-    console.log('Failed to broadcast auth state:', e);
+    console.log("Failed to broadcast auth state:", e);
   }
 }
 
@@ -107,24 +110,24 @@ const SESSION_REFRESH_INTERVAL = 30 * 60 * 1000;
 
 async function refreshSession() {
   try {
-    const stored = await chrome.storage.local.get(['api_refresh_token']);
+    const stored = await chrome.storage.local.get(["api_refresh_token"]);
     if (!stored.api_refresh_token) return;
 
     // The popup/content scripts handle the actual refresh when they load
     // This alarm just ensures we check periodically
-    console.log('Session refresh check triggered');
+    console.log("Session refresh check triggered");
   } catch (e) {
-    console.log('Session refresh failed:', e);
+    console.log("Session refresh failed:", e);
   }
 }
 
 // Set up alarm for periodic session refresh
-chrome.alarms.create('sessionRefresh', {
-  periodInMinutes: 30
+chrome.alarms.create("sessionRefresh", {
+  periodInMinutes: 30,
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === 'sessionRefresh') {
+  if (alarm.name === "sessionRefresh") {
     refreshSession();
   }
 });

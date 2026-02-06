@@ -1,4 +1,4 @@
-/* True Cost Calculator - Badge Styles */
+/* Savest - Badge Styles */
 
 :root {
   /* Base palette */
@@ -29,7 +29,8 @@
   background: linear-gradient(135deg, var(--mint) 0%, #c8e6c9 100%);
   border: 2px solid var(--savings-primary);
   border-radius: 6px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 13px;
   line-height: 1.3;
   white-space: nowrap;
@@ -84,7 +85,8 @@
   align-items: center;
   justify-content: center;
   z-index: 999999;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .true-cost-modal {
