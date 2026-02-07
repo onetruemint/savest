@@ -92,6 +92,9 @@
   });
 
   async function init() {
+    // Restore auth session so savings get recorded to the API
+    await window.supabase.restoreSession();
+
     // Initial processing
     processPage();
 

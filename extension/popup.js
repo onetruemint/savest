@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Frontend URL for auth
   const FRONTEND_URL = "http://localhost:3001";
 
-  let currentPeriod = "today";
+  let currentPeriod = "all";
 
   // Default settings
   const defaults = {
