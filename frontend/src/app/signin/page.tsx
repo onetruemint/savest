@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { signIn, signUp, getGoogleOAuthUrl } from "@/lib/api";
 
 export default function SignInPage() {
@@ -69,18 +70,12 @@ export default function SignInPage() {
             href="/"
             className="inline-flex items-center gap-2.5 text-xl font-semibold text-dark"
           >
-            <svg
-              viewBox="0 0 24 24"
-              width="32"
-              height="32"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="text-primary"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 6v6l4 2" />
-            </svg>
+            <Image
+              src="/SavestRound.svg"
+              alt="Savent logo"
+              width={48}
+              height={48}
+            />
             <span>Savest</span>
           </Link>
         </div>

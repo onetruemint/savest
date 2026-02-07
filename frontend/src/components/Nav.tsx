@@ -44,8 +44,8 @@ export default function Nav() {
           <Image
             src="/SavestRound.svg"
             alt="Savent logo"
-            width={28}
-            height={28}
+            width={48}
+            height={48}
           />
           <span>Savest</span>
         </Link>

@@ -214,54 +214,36 @@ button:hover {
 
 /* Auth Section */
 .auth-section {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.auth-prompt {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 12px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
   text-align: center;
 }
 
 .sign-in-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px 16px;
-  background: var(--primary);
-  color: var(--white);
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  display: inline-block;
+  font-size: 12px;
+  color: #666;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: color 0.2s;
 }
 
 .sign-in-link:hover {
-  background: var(--primary-hover);
-}
-
-.sign-in-link svg {
-  flex-shrink: 0;
+  color: var(--primary);
+  text-decoration: underline;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
+  justify-content: center;
+  gap: 8px;
 }
 
 .user-info span {
-  font-size: 13px;
-  color: var(--black);
+  font-size: 12px;
+  color: #888;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -269,17 +251,20 @@ button:hover {
 }
 
 .sign-out-btn {
-  padding: 6px 12px;
-  background: var(--white);
-  border: 1px solid #ddd;
+  padding: 3px 10px;
+  background: transparent;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
+  color: #e53935;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  width: auto;
 }
 
 .sign-out-btn:hover {
-  background: var(--mint);
+  background: #fbe9e7;
+  border-color: #e53935;
 }
 
 /* Time Filters */
