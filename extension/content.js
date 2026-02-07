@@ -93,7 +93,8 @@
 
   async function init() {
     // Restore auth session so savings get recorded to the API
-    await window.supabase.restoreSession();
+    const user = await window.supabase.restoreSession();
+    console.log("[Savest] Auth restored:", !!user, user?.email);
 
     // Initial processing
     processPage();
