@@ -18,7 +18,7 @@ export default function Footer() {
 
           <div className="flex gap-8">
             <Link
-              href="#"
+              href="/privacy"
               className="text-sm text-mint hover:text-offwhite transition-colors"
             >
               Privacy Policy
