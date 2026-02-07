@@ -124,8 +124,6 @@ class TrueCostAPI {
       "api_user",
     ]);
 
-    console.log("[Savest] Stored tokens found:", !!stored.api_access_token, !!stored.api_refresh_token);
-
     if (stored.api_access_token) {
       this.accessToken = stored.api_access_token;
       this.refreshToken = stored.api_refresh_token;
@@ -133,7 +131,6 @@ class TrueCostAPI {
 
       // Verify token is still valid by refreshing
       const result = await this.refreshSession();
-      console.log("[Savest] Session refresh result:", !!result?.user);
       return result?.user || null;
     }
     return null;
@@ -354,12 +351,7 @@ class TrueCostAPI {
 // Export singleton instance
 const supabase = new TrueCostAPI(API_URL);
 
-// Make available globally for content scripts and popup
-if (typeof window !== "undefined") {
-  window.supabase = supabase;
-}
-
-// For module environments
-if (typeof module !== "undefined") {
-  module.exports = { supabase, TrueCostAPI };
+// Make available globally (works in window, service worker, and content scripts)
+if (typeof self !== "undefined") {
+  self.supabase = supabase;
 }

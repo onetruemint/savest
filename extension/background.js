@@ -1,5 +1,8 @@
 // Background service worker for Savest
 
+// Import API client (available as self.supabase)
+importScripts("lib/supabase.js");
+
 // Default settings
 const DEFAULT_SETTINGS = {
   enabled: true,
@@ -8,6 +11,11 @@ const DEFAULT_SETTINGS = {
   years: 10,
   minPrice: 10,
 };
+
+// Restore auth session on startup
+supabase.restoreSession().then((user) => {
+  console.log("[Savest BG] Session restored:", !!user);
+});
 
 // Initialize on install
 chrome.runtime.onInstalled.addListener((details) => {
@@ -62,12 +70,62 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         },
         () => {
           console.log("Auth synced from frontend");
+          // Update the supabase client in background
+          supabase.accessToken = accessToken;
+          supabase.refreshToken = refreshToken;
+          supabase.user = user;
           // Broadcast to all extension pages
           broadcastAuthState(user);
         },
       );
     }
     sendResponse({ success: true });
+  }
+
+  // Content script API proxying (content scripts can't fetch cross-origin)
+  if (message.action === "recordSaving") {
+    (async () => {
+      try {
+        if (!supabase.isAuthenticated()) {
+          await supabase.restoreSession();
+        }
+        const result = await supabase.recordSaving(message.data);
+        sendResponse({ success: true, saving: result });
+      } catch (e) {
+        console.error("[Savest BG] Failed to record saving:", e);
+        sendResponse({ success: false, error: e.message });
+      }
+    })();
+    return true;
+  }
+
+  if (message.action === "getVariants") {
+    (async () => {
+      try {
+        const variants = await supabase.getActiveVariants();
+        sendResponse({ success: true, variants });
+      } catch (e) {
+        console.error("[Savest BG] Failed to get variants:", e);
+        sendResponse({ success: false, variants: [] });
+      }
+    })();
+    return true;
+  }
+
+  if (message.action === "getWeightedVariant") {
+    (async () => {
+      try {
+        if (!supabase.isAuthenticated()) {
+          await supabase.restoreSession();
+        }
+        const variant = await supabase.selectWeightedVariant();
+        sendResponse({ success: true, variant });
+      } catch (e) {
+        console.error("[Savest BG] Failed to get weighted variant:", e);
+        sendResponse({ success: false, variant: null });
+      }
+    })();
+    return true;
   }
 
   return false;
@@ -106,29 +164,15 @@ async function broadcastAuthState(user) {
 }
 
 // Periodic session refresh (every 30 minutes)
-const SESSION_REFRESH_INTERVAL = 30 * 60 * 1000;
-
-async function refreshSession() {
-  try {
-    const stored = await chrome.storage.local.get(["api_refresh_token"]);
-    if (!stored.api_refresh_token) return;
-
-    // The popup/content scripts handle the actual refresh when they load
-    // This alarm just ensures we check periodically
-    console.log("Session refresh check triggered");
-  } catch (e) {
-    console.log("Session refresh failed:", e);
-  }
-}
-
-// Set up alarm for periodic session refresh
 chrome.alarms.create("sessionRefresh", {
   periodInMinutes: 30,
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "sessionRefresh") {
-    refreshSession();
+    supabase.restoreSession().then((user) => {
+      console.log("[Savest BG] Periodic session refresh:", !!user);
+    });
   }
 });
 

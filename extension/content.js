@@ -92,14 +92,10 @@
   });
 
   async function init() {
-    // Restore auth session so savings get recorded to the API
-    const user = await window.supabase.restoreSession();
-    console.log("[Savest] Auth restored:", !!user, user?.email);
-
     // Initial processing
     processPage();
 
-    // Try to load question variant from Supabase
+    // Try to load question variant via background script
     await loadQuestionVariant();
 
     // Set up purchase confirmation interceptors
@@ -120,17 +116,14 @@
   }
 
   async function loadQuestionVariant() {
-    // Check if supabase client is available and authenticated
-    if (
-      typeof window.supabase !== "undefined" &&
-      window.supabase.isAuthenticated()
-    ) {
-      try {
-        currentVariant = await window.supabase.selectWeightedVariant();
-        if (currentVariant) return;
-      } catch (e) {
-        console.log("Failed to load variant from Supabase:", e);
+    try {
+      const response = await chrome.runtime.sendMessage({ action: "getWeightedVariant" });
+      if (response?.variant) {
+        currentVariant = response.variant;
+        return;
       }
+    } catch (e) {
+      console.log("[Savest] Failed to load variant from background:", e);
     }
 
     // Fall back to random default variant
@@ -523,13 +516,10 @@
   }
 
   async function recordDecision(price, userResponse, finalDecision, variant) {
-    // Check if supabase client is available and authenticated
-    if (
-      typeof window.supabase !== "undefined" &&
-      window.supabase.isAuthenticated()
-    ) {
-      try {
-        await window.supabase.recordSaving({
+    try {
+      await chrome.runtime.sendMessage({
+        action: "recordSaving",
+        data: {
           price: price,
           currency: detectCurrencyCode(),
           url: window.location.href,
@@ -539,10 +529,10 @@
             : variant?.id,
           userResponse: userResponse,
           finalDecision: finalDecision,
-        });
-      } catch (e) {
-        console.log("Failed to record decision to Supabase:", e);
-      }
+        },
+      });
+    } catch (e) {
+      console.log("[Savest] Failed to record decision:", e);
     }
   }
 
