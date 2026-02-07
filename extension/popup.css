@@ -220,18 +220,36 @@ button:hover {
   text-align: center;
 }
 
+.auth-prompt {
+  font-size: 11px;
+  color: #888;
+  margin-top: 6px;
+}
+
 .sign-in-link {
-  display: inline-block;
-  font-size: 12px;
-  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: background 0.2s;
 }
 
 .sign-in-link:hover {
-  color: var(--primary);
-  text-decoration: underline;
+  background: var(--primary-hover);
+}
+
+.sign-in-link svg {
+  flex-shrink: 0;
 }
 
 .user-info {
